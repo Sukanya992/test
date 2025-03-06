@@ -1,11 +1,11 @@
 pipeline {
     agent any 
     environment {
-        SONARQUBE_URL = "http://35.184.36.107:9000/"
+        SONARQUBE_URL = "http://35.209.243.49:9000/"
         SONARQUBE_TOKEN = credentials ('sonar-token')
         GOOGLE_APPLICATION_CREDENTIALS = credentials('gcp-creds')
         GCP_REGION = 'us-central1'  // Change if your Artifact Registry is in a different region
-        GCP_PROJECT_ID = 'harshini-project-452710'  // Replace with your Google Cloud Project ID
+        GCP_PROJECT_ID = 'sukanya-project-452710'  // Replace with your Google Cloud Project ID
     }
     tools {
         git 'git'
@@ -15,7 +15,7 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/honey1417/my-usecase1.git'
+                git branch: 'main', url: 'https://github.com/Sukanya992/test.git'
             }
         }
 
@@ -30,7 +30,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
-                    sh "mvn clean verify sonar:sonar -Dsonar.projectKey=sonarqube-jenkins-demo -Dsonar.host.url=${SONARQUBE_URL} -Dsonar.login=${SONARQUBE_TOKEN}"
+                    sh "mvn clean verify sonar:sonar -Dsonar.projectKey=nexus -Dsonar.host.url=${SONARQUBE_URL} -Dsonar.login=${SONARQUBE_TOKEN}"
                 }
             }
         }
@@ -39,8 +39,8 @@ pipeline {
             steps {
                 script {
                      withCredentials([usernamePassword(credentialsId: 'nexus-creds', passwordVariable: 'NEXUS_PSW', usernameVariable: 'NEXUS_USR')]) {
-                       //sh "mvn deploy -DaltDeploymentRepository=nexus::default::http://34.72.222.210:8081/repository/my-usecase1-release/  -DskipTests -X" (for release)
-                       sh" mvn deploy -DaltDeploymentRepository=nexus::default::http://34.72.222.210:8081/repository/my-usecase1-snapshot/ -DskipTests -X" //for snapshot
+                       //sh "mvn deploy -DaltDeploymentRepository=nexus::default::http://35.209.243.49:8081/repository/sonar/-release/  -DskipTests -X" (for release)
+                       sh" mvn deploy -DaltDeploymentRepository=nexus::default::http://35.209.243.49:8081/repository/sonar-snapshot/ -DskipTests -X" //for snapshot
                         
 
                     }
