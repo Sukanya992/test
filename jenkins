@@ -36,7 +36,7 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USR', passwordVariable: 'NEXUS_PSW')]) {
                         sh """
-                            mvn deploy -DaltDeploymentRepository=nexus::default::http://35.239.230.209:8081/repository/nexus-snapshot/ \
+                            mvn deploy -DaltDeploymentRepository=nexus::default::http://35.239.230.209:8081/repository/nexus/ \
                                        -DskipTests \
                                        -Dnexus.user=$NEXUS_USR \
                                        -Dnexus.pass=$NEXUS_PSW \
