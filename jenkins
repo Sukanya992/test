@@ -3,7 +3,7 @@ pipeline {
     environment {
         SONARQUBE_URL = "http://35.209.243.49:9000/"
         SONARQUBE_TOKEN = credentials('sonar-token')
-        GCP_PROJECT_ID = 'sukanya-project-452710'  // Replace with your Google Cloud Project ID
+        GCP_PROJECT_ID = 'sukanya-project-452710'
     }
     tools {
         maven 'maven'
@@ -37,10 +37,9 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USR', passwordVariable: 'NEXUS_PSW')]) {
                         sh """
                             mvn deploy -DaltDeploymentRepository=nexus::default::http://35.239.230.209:8081/repository/nexus/ \
-                                       -DskipTests \
                                        -Dnexus.user=$NEXUS_USR \
                                        -Dnexus.pass=$NEXUS_PSW \
-                                       -X
+                                       -DskipTests -X
                         """
                     }
                 }
