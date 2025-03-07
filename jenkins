@@ -6,7 +6,6 @@ pipeline {
         GCP_PROJECT_ID = 'sukanya-project-452710'  // Replace with your Google Cloud Project ID
     }
     tools {
-        git 'git'
         maven 'maven'
     }
     stages {
