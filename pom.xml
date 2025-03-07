@@ -62,7 +62,7 @@
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>3.0.0</version>
                 <configuration>
-                    <altDeploymentRepository>nexus::default::http://35.239.230.209:8081/repository/nexus-snapshot/</altDeploymentRepository>
+                    <altDeploymentRepository>nexus::default::http://35.239.230.209:8081/repository/nexus/</altDeploymentRepository>
                 </configuration>
             </plugin>
         </plugins>
