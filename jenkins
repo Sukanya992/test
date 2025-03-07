@@ -2,7 +2,7 @@ pipeline {
     agent any 
     environment {
         SONARQUBE_URL = "http://35.209.243.49:9000/"
-        SONARQUBE_TOKEN = credentials ('sonar-token')
+        SONARQUBE_TOKEN = credentials('sonar-token')
         GCP_PROJECT_ID = 'sukanya-project-452710'  // Replace with your Google Cloud Project ID
     }
     tools {
@@ -23,7 +23,6 @@ pipeline {
             }
         }
 
-
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
@@ -35,16 +34,17 @@ pipeline {
         stage('Deploy to Nexus Repo') {
             steps {
                 script {
-                     withCredentials([usernamePassword(credentialsId: 'nexus-creds', passwordVariable: 'NEXUS_PSW', usernameVariable: 'NEXUS_USR')]) {
-                       //sh "mvn deploy -DaltDeploymentRepository=nexus::default::http://35.239.230.209:8081/repository/nexus-release/  -DskipTests -X" (for release)
-                         sh" mvn deploy -DaltDeploymentRepository=nexus::default::http://35.239.230.209:8081/repository/nexus-snapshot/ -DskipTests -X" //for snapshot
-                        
-
+                    withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USR', passwordVariable: 'NEXUS_PSW')]) {
+                        sh """
+                            mvn deploy -DaltDeploymentRepository=nexus::default::http://35.239.230.209:8081/repository/nexus-snapshot/ \
+                                       -DskipTests \
+                                       -Dnexus.user=$NEXUS_USR \
+                                       -Dnexus.pass=$NEXUS_PSW \
+                                       -X
+                        """
                     }
                 }
            }
-
         }
-
     }
 }
